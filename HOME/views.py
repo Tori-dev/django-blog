@@ -29,7 +29,7 @@ def index(request):
         'cat': cat,
     }
 
-    return render(request, 'index.html', context)
+    return render(request, 'HOME/index.html', context)
 
 def blog_detail(request, slug):
     posts = Blog.objects.order_by('-id')[:5]
@@ -44,7 +44,7 @@ def blog_detail(request, slug):
         'comments': comments
     }
 
-    return render (request, 'blog_detail.html', context)
+    return render (request, 'HOME/blog_detail.html', context)
 
 
 def category(request, slug):
@@ -71,7 +71,7 @@ def category(request, slug):
         'blog_cat': blog_cat,
     }
     
-    return render(request, 'category.html', context)
+    return render(request, 'HOME/category.html', context)
 
 def add_comment(request, slug):
     if request.method == 'POST':
