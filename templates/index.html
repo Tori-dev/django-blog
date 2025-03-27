@@ -1,0 +1,129 @@
+{% extends "base.html" %} {% load static %} {% block body %}
+
+<!-- hero section -->
+
+{% for post in main_post %}
+<section id="hero">
+  <div class="container-xl">
+    <div class="row gy-4">
+      <div class="col-lg-12">
+        <!-- featured post large -->
+        <div class="post featured-post-lg">
+          <div class="details clearfix">
+            <a
+              href="{% url 'category' post.category.slug %}"
+              class="category-badge"
+              >{{post.category.name}}</a
+            >
+            <h2 class="post-title">
+              <a href="{% url 'blog_detail' post.blog_slug %}"
+                >{{post.title}}</a
+              >
+            </h2>
+            <ul class="meta list-inline mb-0">
+              <li class="list-inline-item"><a href="#">{{post.author}}</a></li>
+              <li class="list-inline-item">{{post.date}}</li>
+            </ul>
+          </div>
+          <a href="{% url 'blog_detail' post.blog_slug %}">
+            <div class="thumb rounded">
+              <div
+                class="inner data-bg-image"
+                data-bg-image="{{post.image.url}}"
+              ></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endfor %}
+
+<!-- section main content -->
+<section class="main-content">
+  <div class="container-xl">
+    <div class="row gy-4">
+      <div class="col-lg-12">
+        <div class="row gy-4">
+          {% for post in post %}
+          <div class="col-sm-6">
+            <!-- post -->
+            <div class="post post-grid rounded bordered">
+              <div class="thumb top-rounded">
+                <a
+                  href="{% url 'category' post.category.slug %}"
+                  class="category-badge position-absolute"
+                >
+                  {{post.category.name}}
+                </a>
+                <span class="post-format">
+                  <i class="icon-picture"></i>
+                </span>
+                <a href="{% url 'blog_detail' post.blog_slug %}">
+                  <div class="inner">
+                    <img src="{{post.image.url}}" alt="post-title" />
+                  </div>
+                </a>
+              </div>
+              <div class="details">
+                <ul class="meta list-inline mb-0">
+                  <li class="list-inline-item">
+                    <a href="#">
+                      <img
+                        src="{% static 'images/other/author-sm.png' %}"
+                        class="author"
+                        alt="author"
+                        style='width: 1.5rem;'
+                      />
+                      {{post.author}}
+                    </a>
+                  </li>
+                  <li class="list-inline-item">{{post.date}}</li>
+                </ul>
+                <h5 class="post-title mb-3 mt-3">
+                  <a href="{% url 'blog_detail' post.blog_slug %}">
+                    {{post.title}}
+                  </a>
+                </h5>
+                <p class="excerpt mb-0">{{ post.content|slice:":150" }}...</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        {% if post.has_other_pages %}
+        <nav>
+          <ul class="pagination justify-content-center">
+            {% if post.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ post.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for num in post.paginator.page_range %}
+              {% if post.number == num %}
+                <li class="page-item active" aria-current="page">
+                  <span class="page-link">{{ num }}</span>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {% if post.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ post.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock body %}
